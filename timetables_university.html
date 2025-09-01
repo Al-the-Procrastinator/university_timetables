@@ -1,0 +1,976 @@
+<!DOCTYPE html>
+<html>
+<head>
+	
+  <meta charset="UTF-8">
+
+<style>
+
+:root {
+  --bg_color: #0a0a0a;
+  --text_color: #bacee6;
+}
+
+* {
+  margin-left: auto;
+  margin-right: auto;
+  font-size: 16px;
+}
+
+body {
+  background-color: var(--bg_color);
+  color: var(--text_color);
+  /*font-variant: small-caps;*/
+  font-family: system-ui;
+
+  margin-left: auto;
+  margin-right: auto;
+
+  min-width: 340px;
+  max-width: 900px;
+
+  text-align: center;
+}
+
+/*.warning {
+  margin-left: 0%;
+  margin-right: 0%;
+}
+
+@media(min-width: 480px) {
+  .warning {
+    margin-left: 10%;
+    margin-right: 10%;
+  }
+}*/
+
+
+/*@media (max-width: 480px) {
+  .warning {
+    margin-left: 0%;
+    margin-right: 0%;
+
+  }
+}
+
+@media (min-width: 481px) {
+  .warning {
+    margin-left: 10%;
+    margin-right: 10%;
+  }
+}*/
+
+.warning {
+  min-width: 390px;
+  max-width: 740px;
+  margin-bottom: 40px;
+}
+
+hr {
+  border-width: 0.5px;
+  border-style: dashed;
+  border-color: #323851;
+}
+
+.group_choice {
+
+}
+
+.group_but {
+  border-style: none;
+  background-color: #323851;
+  color: white;
+  border-radius: 3px;
+  width: 20px;
+  height: 20px;
+  
+  width: 2em;
+  height: 2em;
+}
+
+.group_but:hover {
+  background-color: var(--bg_color);
+}
+
+@media (max-width: 480px) {
+  .group_choice {
+    gap: 10px;
+    flex-wrap: wrap;
+  }
+  
+  .group_but {
+    width: 36px;
+    height: 36px;
+    font-size: 18px;
+  }
+}
+
+table {
+  border-collapse: collapse;
+  border-style: hidden;
+}
+
+th, td {
+  border: 1px dashed #575f7f;
+}
+
+.weekday_col {
+  width: 10%;
+}
+
+.class_row {
+  width: 4%;
+}
+
+.filled {
+  background-color: #575f7f;
+  border: 1px solid #bbdefb;
+}
+
+.gap {
+  border: 1px solid #90caf9;
+  background-color: #323851;
+}
+</style>
+
+<script>
+
+//let prev_week = "upper"
+//let week = "lower";
+
+let cur_group = localStorage.getItem('cur_group') || 1;
+
+const timetable = {
+  g1: {
+    upper: {
+      mon: {
+        c1: ``,
+        c2: ``,
+        c3: ``,
+        c4: ``,
+        c5: `<b>Вычислительное мышление</b><br>Подруппа 1<br>Страшнов С.В.`,
+        c6: ``,//Инструментальные средства цифрового филолога, лаб, Новикова Д.С.  Еще подгруппа нужна (лаб работа)
+        c7: ``,
+        c8: ``,
+      },
+      tue: {
+        c1: ``,
+        c2: ``,
+        c3: ``,
+        c4: ``,
+        c5: ``,
+        c6: ``,
+        c7: ``,
+        c8: ``,
+      },
+      wed: {
+        c1: ``,
+        c2: ``,
+        c3: ``,
+        c4: ``,
+        c5: ``,
+        c6: ``,
+        c7: ``,
+        c8: ``,
+      },
+      thu: {
+        c1: ``,
+        c2: ``,
+        c3: ``,
+        c4: ``,
+        c5: ``,
+        c6: ``,
+        c7: ``,
+        c8: ``,
+      },
+      fri: {
+        c1: ``,
+        c2: ``,
+        c3: ``,
+        c4: ``,
+        c5: ``,
+        c6: ``,
+        c7: ``,
+        c8: ``,
+      },
+      sat: {
+        c1: ``,
+        c2: ``,
+        c3: ``,
+        c4: ``,
+        c5: ``,
+        c6: ``,
+        c7: ``,
+        c8: ``,
+      }
+    },
+    lower: {
+      mon: {
+        c1: ``,
+        c2: ``,
+        c3: ``,
+        c4: ``,
+        c5: ``,
+        c6: ``,
+        c7: ``,
+        c8: ``,
+      },
+      tue: {
+        c1: ``,
+        c2: ``,
+        c3: ``,
+        c4: ``,
+        c5: ``,
+        c6: ``,
+        c7: ``,
+        c8: ``,
+      },
+      wed: {
+        c1: ``,
+        c2: ``,
+        c3: ``,
+        c4: ``,
+        c5: ``,
+        c6: ``,
+        c7: ``,
+        c8: ``,
+      },
+      thu: {
+        c1: ``,
+        c2: ``,
+        c3: ``,
+        c4: ``,
+        c5: ``,
+        c6: ``,
+        c7: ``,
+        c8: ``,
+      },
+      fri: {
+        c1: ``,
+        c2: ``,
+        c3: ``,
+        c4: ``,
+        c5: ``,
+        c6: ``,
+        c7: ``,
+        c8: ``,
+      },
+      sat: {
+        c1: ``,
+        c2: ``,
+        c3: ``,
+        c4: ``,
+        c5: ``,
+        c6: ``,
+        c7: ``,
+        c8: ``,
+      }
+    }
+  },
+  
+  g2: {
+    upper: {
+      mon: {
+        c1: ``,
+        c2: ``,
+        c3: `<b>Иняз/русский как иностранный</b>`,
+        c4: `<b>Иняз</b>`,
+        c5: `<b>Вычислительное мышение</b><br>Подгруппа 1<br>Страшнов С.В.`,
+        c6: ``,
+        c7: ``,
+        c8: ``,
+      },
+      tue: {
+        c1: ``,
+        c2: ``,
+        c3: `<b>История России</b><br>Герасимов Д.И.`,
+        c4: ``,
+        c5: `<b>Прикладная физ-ра, ФОК</b><br>Герасимов Д.И.`,
+        c6: `<b>Прикладная физ-ра, ФОК</b><br>Герасимов Д.И.`,
+        c7: ``,
+        c8: ``,
+      },
+      wed: {
+        c1: ``,
+        c2: `<b>ОБЖ</b>`,
+        c3: ``,
+        c4: `<b>Базовый курс литературоведения</b><br>Овчаренко А.Ю.`,
+        c5: `<b>Основы российской государственности</b><br>Галоян Н.Г.`,
+        c6: `<b>Базовый курс литературоведения</b><br>Овчаренко А.Ю.`,
+        c7: ``,
+        c8: ``,
+      },
+      thu: {
+        c1: ``,
+        c2: `<b>Основы российской государственности</b><br>Галоян Н.Г.`,
+        c3: `<b>История религий России</b>`,
+        c4: ``,
+        c5: ``,
+        c6: `ФАКУЛЬТАТИВ<br><b>Турецкий язык</b><br>Учгюль Севинч`,
+        c7: ``,
+        c8: ``,
+      },
+      fri: {
+        c1: `<b>Базовый курс языкознания</b>`,
+        c2: `<b>Базовый курс языкознания</b>`,
+        c3: ``,
+        c4: ``,
+        c5: ``,
+        c6: ``,
+        c7: ``,
+        c8: ``,
+      },
+      sat: {
+        c1: ``,
+        c2: `<b>История России</b><br>Герасимов Д.И.`,
+        c3: ``,
+        c4: ``,
+        c5: ``,
+        c6: ``,
+        c7: ``,
+        c8: ``,
+      }
+    },
+    lower: {
+      mon: {
+        c1: ``,
+        c2: ``,
+        c3: `<b>Иняз/русский как иностранный</b>`,
+        c4: `<b>Иняз</b>`,
+        c5: `<b>Инструментальные средства цифрового филолога</b><br>Новикова Д.С.`,
+        c6: ``,
+        c7: ``,
+        c8: ``,
+      },
+      tue: {
+        c1: ``,
+        c2: ``,
+        c3: `<b>История России</b><br>Герасимов Д.И.`,
+        c4: ``,
+        c5: `<b>Прикладная физ-ра, ФОК</b><br>Герасимов Д.И.`,
+        c6: `<b>Прикладная физ-ра, ФОК</b><br>Герасимов Д.И.`,
+        c7: ``,
+        c8: ``,
+      },
+      wed: {
+        c1: ``,
+        c2: `<b>ОБЖ</b>`,
+        c3: ``,
+        c4: `<b>Введение в специальность</b><br>Овчаренко А.Ю.`,
+        c5: `<b>Основы российской государственности</b><br>Галоян Н.Г.`,
+        c6: `<b>Вводный курс по математике</b><br>Волков С.В.`,
+        c7: ``,
+        c8: ``,
+      },
+      thu: {
+        c1: `<b>История религий России</b><br>Чистякова О.В.`,
+        c2: `<b>Вводный курс по математике</b><br>Колесникова И.А.`,
+        c3: ``,
+        c4: ``,
+        c5: ``,
+        c6: `ФАКУЛЬТАТИВ<br><b>Турецкий язык</b><br>Учгюль Севинч`,
+        c7: ``,
+        c8: ``,
+      },
+      fri: {
+        c1: ``,
+        c2: `<b>Вычислительное мышение</b>`,
+        c3: ``,
+        c4: ``,
+        c5: ``,
+        c6: ``,
+        c7: ``,
+        c8: ``,
+      },
+      sat: {
+        c1: `<b>История России</b><br>Герасимов Д.И.`,
+        c2: `<b>История России</b><br>Герасимов Д.И.`,
+        c3: `<b>Инструментальные средства цифрового филолога</b><br>Новикова Д.С.`,
+        c4: ``,
+        c5: ``,
+        c6: ``,
+        c7: ``,
+        c8: ``,
+      }
+    }
+  },
+  
+  g3: {
+    upper: {
+      mon: {
+        c1: ``,
+        c2: ``,
+        c3: ``,
+        c4: ``,
+        c5: ``,
+        c6: ``,
+        c7: ``,
+        c8: ``,
+      },
+      tue: {
+        c1: ``,
+        c2: ``,
+        c3: ``,
+        c4: ``,
+        c5: ``,
+        c6: ``,
+        c7: ``,
+        c8: ``,
+      },
+      wed: {
+        c1: ``,
+        c2: ``,
+        c3: ``,
+        c4: ``,
+        c5: ``,
+        c6: ``,
+        c7: ``,
+        c8: ``,
+      },
+      thu: {
+        c1: ``,
+        c2: ``,
+        c3: ``,
+        c4: ``,
+        c5: ``,
+        c6: ``,
+        c7: ``,
+        c8: ``,
+      },
+      fri: {
+        c1: ``,
+        c2: ``,
+        c3: ``,
+        c4: ``,
+        c5: ``,
+        c6: ``,
+        c7: ``,
+        c8: ``,
+      },
+      sat: {
+        c1: ``,
+        c2: ``,
+        c3: ``,
+        c4: ``,
+        c5: ``,
+        c6: ``,
+        c7: ``,
+        c8: ``,
+      }
+    },
+    lower: {
+      mon: {
+        c1: ``,
+        c2: ``,
+        c3: ``,
+        c4: ``,
+        c5: ``,
+        c6: ``,
+        c7: ``,
+        c8: ``,
+      },
+      tue: {
+        c1: ``,
+        c2: ``,
+        c3: ``,
+        c4: ``,
+        c5: ``,
+        c6: ``,
+        c7: ``,
+        c8: ``,
+      },
+      wed: {
+        c1: ``,
+        c2: ``,
+        c3: ``,
+        c4: ``,
+        c5: ``,
+        c6: ``,
+        c7: ``,
+        c8: ``,
+      },
+      thu: {
+        c1: ``,
+        c2: ``,
+        c3: ``,
+        c4: ``,
+        c5: ``,
+        c6: ``,
+        c7: ``,
+        c8: ``,
+      },
+      fri: {
+        c1: ``,
+        c2: ``,
+        c3: ``,
+        c4: ``,
+        c5: ``,
+        c6: ``,
+        c7: ``,
+        c8: ``,
+      },
+      sat: {
+        c1: ``,
+        c2: ``,
+        c3: ``,
+        c4: ``,
+        c5: ``,
+        c6: ``,
+        c7: ``,
+        c8: ``,
+      }
+    }
+  },
+  
+  g4: {
+    upper: {
+      mon: {
+        c1: ``,
+        c2: ``,
+        c3: ``,
+        c4: ``,
+        c5: ``,
+        c6: ``,
+        c7: ``,
+        c8: ``,
+      },
+      tue: {
+        c1: ``,
+        c2: ``,
+        c3: ``,
+        c4: ``,
+        c5: ``,
+        c6: ``,
+        c7: ``,
+        c8: ``,
+      },
+      wed: {
+        c1: ``,
+        c2: ``,
+        c3: ``,
+        c4: ``,
+        c5: ``,
+        c6: ``,
+        c7: ``,
+        c8: ``,
+      },
+      thu: {
+        c1: ``,
+        c2: ``,
+        c3: ``,
+        c4: ``,
+        c5: ``,
+        c6: ``,
+        c7: ``,
+        c8: ``,
+      },
+      fri: {
+        c1: ``,
+        c2: ``,
+        c3: ``,
+        c4: ``,
+        c5: ``,
+        c6: ``,
+        c7: ``,
+        c8: ``,
+      },
+      sat: {
+        c1: ``,
+        c2: ``,
+        c3: ``,
+        c4: ``,
+        c5: ``,
+        c6: ``,
+        c7: ``,
+        c8: ``,
+      }
+    },
+    lower: {
+      mon: {
+        c1: ``,
+        c2: ``,
+        c3: ``,
+        c4: ``,
+        c5: ``,
+        c6: ``,
+        c7: ``,
+        c8: ``,
+      },
+      tue: {
+        c1: ``,
+        c2: ``,
+        c3: ``,
+        c4: ``,
+        c5: ``,
+        c6: ``,
+        c7: ``,
+        c8: ``,
+      },
+      wed: {
+        c1: ``,
+        c2: ``,
+        c3: ``,
+        c4: ``,
+        c5: ``,
+        c6: ``,
+        c7: ``,
+        c8: ``,
+      },
+      thu: {
+        c1: ``,
+        c2: ``,
+        c3: ``,
+        c4: ``,
+        c5: ``,
+        c6: ``,
+        c7: ``,
+        c8: ``,
+      },
+      fri: {
+        c1: ``,
+        c2: ``,
+        c3: ``,
+        c4: ``,
+        c5: ``,
+        c6: ``,
+        c7: ``,
+        c8: ``,
+      },
+      sat: {
+        c1: ``,
+        c2: ``,
+        c3: ``,
+        c4: ``,
+        c5: ``,
+        c6: ``,
+        c7: ``,
+        c8: ``,
+      }
+    }
+  }
+};
+
+
+let cur_week = "lower"
+
+let week = localStorage.getItem('cur_week') || "lower";
+let last_update_date = localStorage.getItem('last_update_date') || "";
+
+function update_week() {
+    const today = new Date();
+    const cur_date = today.toLocaleDateString('ru-RU');
+    const cur_day = today.toLocaleDateString('ru-RU', {weekday: 'short'});
+    
+    if (cur_day === "пн" && last_update_date !== cur_date) { //(cur_day === "вс") { // для отладки
+
+        week = (week === "upper") ? "lower" : "upper";
+        
+        localStorage.setItem('cur_week', week);
+        localStorage.setItem('last_update_date', cur_date);
+        
+        console.log("Неделя изменена на", week);
+    }
+}
+
+function show_timetable() {
+
+  update_week()
+  fill_timetable()
+
+  //document.getElementById('date').innerHTML = new Date().toLocaleDateString('ru-RU', {day: '2-digit', month: 'short', weekday: 'short'});
+  document.getElementById('date').innerHTML = new Date().toLocaleDateString('ru-RU', {day: '2-digit', month: '2-digit'});
+
+  document.getElementById('weekday').innerHTML = new Date().toLocaleDateString('ru-RU', {weekday: 'short'});
+
+  //new_date = new Date()
+  //document.getElementById('date').innerHTML = new_date.getDate();
+
+  document.getElementById('group').innerHTML = cur_group;
+
+  if (week === "upper") { // верхняя
+
+    //document.getElementById('week').innerHTML = `<u>не</u>чётная неделя`
+    document.getElementById('week').innerHTML = `<u>верхняя</u> неделя`
+  }
+  else if (week === "lower") { // нижняя
+
+    //document.getElementById('week').innerHTML = "чётная неделя"
+    document.getElementById('week').innerHTML = `<u>нижняя</u> неделя`
+  };
+    document.getElementById('timetable').innerHTML = ""//timetable[week + "_" + cur_group]
+};
+
+
+</script>
+
+<script>
+
+// function fill_timetable() {
+//   // console.log('=== ЗАПОЛНЕНИЕ РАСПИСАНИЯ ===');
+//   // console.log('cur_group:', cur_group, 'тип:', typeof cur_group);
+//   // console.log('week:', week, 'тип:', typeof week);
+  
+//   const group_key = "g" + cur_group;
+//   // console.log('group_key:', group_key);
+  
+//   // Проверяем существование группы
+//   if (!timetable[group_key]) {
+//     // console.error('❌ Группа не найдена в timetable:', group_key);
+//     // console.log('Доступные группы:', Object.keys(timetable));
+//     return;
+//   }
+  
+//   // Проверяем существование недели
+//   if (!timetable[group_key][week]) {
+//     // console.error('❌ Неделя не найдена:', week);
+//     // console.log('Доступные недели для группы', group_key, ':', Object.keys(timetable[group_key]));
+//     return;
+//   }
+  
+//   const week_data = timetable[group_key][week];
+//   // console.log('week_data:', week_data);
+  
+//   // Проходим по всем строкам (1-8)
+//   for (let row = 1; row <= 8; row++) {
+//     const row_key = "c" + row;
+//     // console.log('--- Обрабатываем строку', row, 'ключ:', row_key);
+    
+//     // Проходим по всем дням недели
+//     const days = ['mon', 'tue', 'wed', 'thu', 'fri', 'sat'];
+//     days.forEach(day => {
+//       const cell_id = day + row;
+//       const cell = document.getElementById(cell_id);
+      
+//       // console.log('Ячейка', cell_id, 'найдена:', !!cell);
+      
+//       if (cell && week_data[day] && week_data[day][row_key]) {
+//         cell.innerHTML = week_data[day][row_key];
+//         // console.log('✅ Заполнено:', cell_id, '=', week_data[day][row_key]);
+//       } else if (cell) {
+//         cell.innerHTML = "";
+//         // console.log('❌ Пустая ячейка:', cell_id);
+//       }
+//     });
+//   }
+  
+//   // console.log('=== ЗАВЕРШЕНО ===');
+// }
+
+
+
+function fill_timetable() {
+  const group_key = "g" + cur_group;
+  
+  if (!timetable[group_key]) return;
+  if (!timetable[group_key][week]) return;
+  
+  const week_data = timetable[group_key][week];
+  
+  // Проходим по всем дням недели
+  const days = ['mon', 'tue', 'wed', 'thu', 'fri', 'sat'];
+  
+  days.forEach(day => {
+    // Сначала заполняем все ячейки и собираем информацию о заполненных
+    const filledCells = [];
+    
+    for (let row = 1; row <= 8; row++) {
+      const row_key = "c" + row;
+      const cell_id = day + row;
+      const cell = document.getElementById(cell_id);
+      
+      if (cell && week_data[day] && week_data[day][row_key]) {
+        cell.innerHTML = week_data[day][row_key];
+        cell.classList.add('filled'); // Добавляем класс для заполненных
+        filledCells.push(row);
+      } else if (cell) {
+        cell.innerHTML = "";
+        cell.classList.remove('filled', 'gap'); // Убираем классы
+      }
+    }
+    
+    // Теперь обрабатываем "окна" - пустые ячейки между заполненными
+    for (let row = 1; row <= 8; row++) {
+      const cell_id = day + row;
+      const cell = document.getElementById(cell_id);
+      
+      if (cell && !cell.classList.contains('filled')) {
+        // Проверяем, есть ли заполненные ячейки до и после этой
+        const hasFilledBefore = filledCells.some(filledRow => filledRow < row);
+        const hasFilledAfter = filledCells.some(filledRow => filledRow > row);
+        
+        if (hasFilledBefore && hasFilledAfter) {
+          cell.classList.add('gap'); // Ячейка между занятиями
+        } else {
+          cell.classList.remove('gap');
+        }
+      }
+    }
+  });
+}
+</script>
+
+</head>
+
+<body onload="show_timetable()"> <!--style="margin-left: 20px; margin-top: 20px;"-->
+
+<div class="warning">
+    <h3>Внимание!</h3>
+
+    <h4>Это расписание не учитывает никакие внештатные ситуации и создано только для определения верхней/нижней недели. Всегда сверяйте информацию о х!</h4>
+</div>
+
+<div style="background-color: #32385180; border-radius: 10px; padding: 14px; padding-bottom: 20px;">
+
+<div class="group_choice">
+Выбор группы: 
+<button class="group_but" onclick="localStorage.setItem('cur_group', 1); location.reload();">1</button>
+<button class="group_but" onclick="localStorage.setItem('cur_group', 2); location.reload();">2</button>
+<button class="group_but" onclick="localStorage.setItem('cur_group', 3); location.reload();">3</button>
+<button class="group_but" onclick="localStorage.setItem('cur_group', 4); location.reload();">4</button>
+</div>
+
+<h4>
+<span id="date">??.??</span>, <span id="weekday" style="text-transform: uppercase;">xx</span>: <span id="week">??? неделя</span>.  
+Группа РФЛбд-<u>0<span id="group">?</span></u>-25
+</h4>
+
+<div>
+<hr>
+<!--div id="timetable">
+Произошла ошибка. Перезагрузите страницу или выберите номер группы вруную.
+</div-->
+
+
+<div>
+<table style="margin-left: -10px;margin-right: -10px; width: -webkit-fill-available;"><!--  width: -moz-available;  border="1px dashed black"--> 
+  <!-- Пустая ячейка в левом верхнем углу -->
+  <tr>
+    <th class="class_row"></th>
+    <th class="weekday_col">Пн</th>
+    <th class="weekday_col">Вт</th>
+    <th class="weekday_col">Ср</th>
+    <th class="weekday_col">Чт</th>
+    <th class="weekday_col">Пт</th>
+    <th class="weekday_col">Сб</th>
+  </tr>
+  
+  <!-- Строка 1 -->
+  <tr>
+    <th class="class_row">
+      <div>1</div>
+      <div style="font-weight: normal; font-size: 12px;">09:00<br>-<br>10:20</div>
+    </th>
+    <td id="mon1"></td>
+    <td id="tue1"></td>
+    <td id="wed1"></td>
+    <td id="thu1"></td>
+    <td id="fri1"></td>
+    <td id="sat1"></td>
+  </tr>
+  
+  <!-- Строка 2 -->
+  <tr>
+    <th class="class_row">
+      <div>2</div>
+      <div style="font-weight: normal; font-size: 12px;">10:30<br>-<br>11:50</div>
+    </th>
+    <td id="mon2"></td>
+    <td id="tue2"></td>
+    <td id="wed2"></td>
+    <td id="thu2"></td>
+    <td id="fri2"></td>
+    <td id="sat2"></td>
+  </tr>
+  
+  <!-- Строка 3 -->
+  <tr>
+    <th class="class_row">
+      <div>3</div>
+      <div style="font-weight: normal; font-size: 12px;">12:00<br>-<br>13:20</div>
+    </th>
+    <td id="mon3"></td>
+    <td id="tue3"></td>
+    <td id="wed3"></td>
+    <td id="thu3"></td>
+    <td id="fri3"></td>
+    <td id="sat3"></td>
+  </tr>
+  
+  <!-- Строка 4 -->
+  <tr>
+    <th class="class_row">
+      <div>4</div>
+      <div style="font-weight: normal; font-size: 12px;">13:30<br>-<br>14:50</div>
+    </th>
+    <td id="mon4"></td>
+    <td id="tue4"></td>
+    <td id="wed4"></td>
+    <td id="thu4"></td>
+    <td id="fri4"></td>
+    <td id="sat4"></td>
+  </tr>
+  
+  <!-- Строка 5 -->
+  <tr>
+    <th class="class_row">
+      <div>5</div>
+      <div style="font-weight: normal; font-size: 12px;">15:00<br>-<br>16:20</div>
+    </th>
+    <td id="mon5"></td>
+    <td id="tue5"></td>
+    <td id="wed5"></td>
+    <td id="thu5"></td>
+    <td id="fri5"></td>
+    <td id="sat5"></td>
+  </tr>
+  
+  <!-- Строка 6 -->
+  <tr>
+    <th class="class_row">
+      <div>6</div>
+      <div style="font-weight: normal; font-size: 12px;">16:30<br>-<br>17:50</div>
+    </th>
+    <td id="mon6"></td>
+    <td id="tue6"></td>
+    <td id="wed6"></td>
+    <td id="thu6"></td>
+    <td id="fri6"></td>
+    <td id="sat6"></td>
+  </tr>
+  
+  <!-- Строка 7 -->
+  <tr>
+    <th class="class_row">
+      <div>7</div>
+      <div style="font-weight: normal; font-size: 12px;">18:00<br>-<br>19:20</div>
+    </th>
+    <td id="mon7"></td>
+    <td id="tue7"></td>
+    <td id="wed7"></td>
+    <td id="thu7"></td>
+    <td id="fri7"></td>
+    <td id="sat7"></td>
+  </tr>
+  
+  <!-- Строка 8 -->
+  <tr>
+    <th class="class_row">
+      <div>8</div>
+      <div style="font-weight: normal; font-size: 12px;">19:30<br>-<br>20:50</div>
+    </th>
+    <td id="mon8"></td>
+    <td id="tue8"></td>
+    <td id="wed8"></td>
+    <td id="thu8"></td>
+    <td id="fri8"></td>
+    <td id="sat8"></td>
+  </tr>
+</table>
+</div>
+</div>
+</div>
+<br>
+TODO! Сбрасывание недели на верхнюю при начале нового семестра.
+
+</body>
+</html>
